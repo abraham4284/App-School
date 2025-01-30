@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser';
+import coutasRoutes from './routes/cuotas/cuotas.routes.js'
 
 const app = express();
 
@@ -22,6 +23,9 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json())
+
+
+app.use("/api",coutasRoutes)
 
 
 export default app;
