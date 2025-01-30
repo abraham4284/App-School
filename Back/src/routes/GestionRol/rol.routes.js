@@ -5,9 +5,9 @@ import { createRol, getRoles, updateRol, deleteRol } from '../../controllers/Ges
 const router = Router();
 
 // Rutas para CRUD de roles
-router.get('/roles', getRoles);  // Obtener todos los roles
-router.post('/roles', createRol);  // Crear un nuevo rol
-router.put('/roles/:id', updateRol);  // Actualizar rol
-router.delete('/roles/:id', deleteRol);  // Eliminar rol
+router.get('/', getRoles);  // Obtener todos los roles
+router.post('/', createRol);  // Crear un nuevo rol
+router.put('/:id', updateRol);  // Actualizar rol
+router.delete('/:id', deleteRol);  // Eliminar rol
 
 export default router;
