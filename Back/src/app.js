@@ -6,6 +6,8 @@ import cookieParser from 'cookie-parser';
 //rutas modulo1
 import rolesRoutes from './routes/GestionRol/rol.routes.js';
 import usuarioRoutes from './routes/GestionUsuario/usuarios.routes.js';
+import direccionesRoutes from './routes/GestionDirecciones/direcciones.routes.js';
+import contactoRoutes from './routes/GestionContacto/contacto.routes.js';
 const app = express();
 
 // Middlewares
@@ -25,6 +27,8 @@ app.get("/", (req, res) => {
 });
 app.use('/api/roles', rolesRoutes);
 app.use('/api/usuarios', usuarioRoutes);
+app.use('/api/direcciones', direccionesRoutes);
+app.use('/api/contacto', contactoRoutes);
 
 // Iniciar el servidor
 app.listen(3000, () => {
