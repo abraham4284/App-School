@@ -19,14 +19,6 @@ export const createMateria = async (req, res) => {
           [nombre, valorMinimo, nota]
       );
 
-      const idMaterias = result.insertId;
-
-      // Insertar en la tabla intermedia cursosmateria
-      // await pool.query(
-      //     "INSERT INTO cursosmateria (idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      //     [idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol]
-      // );
-
       res.status(201).json({ message: "Materia creada correctamente", id: idMaterias });
   } catch (error) {
       res.status(500).json({ error: error.message });

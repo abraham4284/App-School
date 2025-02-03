@@ -23,12 +23,10 @@ export const createCurso = async (req, res) => {
       const idCurso = result.insertId;
 
       // Insertar en la tabla intermedia cursosmateria (si hay materias asignadas)
-      if (idMaterias) {
-          await pool.query(
-              "INSERT INTO cursosmateria (idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol) VALUES (?, ?, ?, ?, ?, ?, ?)",
-              [idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol]
-          );
-      }
+      await pool.query(
+        "INSERT INTO cursosmateria (idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol]
+    );
 
       res.status(201).json({ message: "Curso creado correctamente", id: idCurso });
   } catch (error) {

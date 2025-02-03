@@ -30,15 +30,6 @@ export const createAlumno = async (req, res) => {
           [apellidos, nombres, DNI, legajo, fechaNac, observaciones, amonestaciones, estado, genero, legHermano, idUsuarios, idCurso]
       );
 
-      const idAlumnos = result.insertId;
-
-      // Insertar en la tabla intermedia tutoalumnos (si hay un tutor asignado)
-      if (idTutor) {
-          await pool.query(
-              "INSERT INTO tutoalumnos (idTutor, idAlumnos, idUsuarios, idCurso) VALUES (?, ?, ?, ?)",
-              [idTutor, idAlumnos, idUsuarios, idCurso]
-          );
-      }
 
       res.status(201).json({ message: "Alumno creado correctamente", id: idAlumnos });
   } catch (error) {
