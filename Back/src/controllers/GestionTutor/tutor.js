@@ -26,12 +26,10 @@ export const createTutor = async (req, res) => {
       const idTutor = result.insertId;
 
       // Insertar en la tabla intermedia tutoalumnos (si hay un alumno asignado)
-      if (idAlumnos) {
-          await pool.query(
-              "INSERT INTO tutoalumnos (idTutor, idAlumnos, idUsuarios, idCurso) VALUES (?, ?, ?, ?)",
-              [idTutor, idAlumnos, idUsuarios, idCurso]
-          );
-      }
+      await pool.query(
+        "INSERT INTO tutoalumnos (idTutor, idAlumnos, idUsuarios, idCurso) VALUES (?, ?, ?, ?)",
+        [idTutor, idAlumnos, idUsuarios, idCurso]
+    );
 
       res.status(201).json({ message: "Tutor creado correctamente", id: idTutor });
   } catch (error) {
