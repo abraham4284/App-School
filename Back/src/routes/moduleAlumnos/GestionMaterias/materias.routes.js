@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMateria, deleteMateria, getMaterias, updateMateria } from "../../controllers/GestionMaterias/materias.js";
+import { createMateria, deleteMateria, getMaterias, updateMateria } from "../../../controllers/GestionMaterias/materias.js";
 
 
 const router = Router();

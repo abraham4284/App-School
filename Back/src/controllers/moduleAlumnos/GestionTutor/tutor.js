@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
 
 // Obtener todos los tutores
 export const getTutores = async (req, res) => {

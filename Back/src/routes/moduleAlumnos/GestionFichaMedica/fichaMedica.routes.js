@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createFichaMedica, deleteFichaMedica, getFichasMedicas, updateFichaMedica } from "../../controllers/GestionFichaMedica/fichaMedica.js";
+import { createFichaMedica, deleteFichaMedica, getFichasMedicas, updateFichaMedica } from "../../../controllers/GestionFichaMedica/fichaMedica.js";
 
 
 const router = Router();

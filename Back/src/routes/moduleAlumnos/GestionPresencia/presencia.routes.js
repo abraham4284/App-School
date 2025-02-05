@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createPresencia, deletePresencia, getPresencias, updatePresencia } from "../../controllers/GestionPresencia/presencia.js";
+import { createPresencia, deletePresencia, getPresencias, updatePresencia } from "../../../controllers/GestionPresencia/presencia.js";
 
 
 const router = Router();
