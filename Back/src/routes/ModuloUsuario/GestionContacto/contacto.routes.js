@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createContacto , getContactos, deleteContacto, updateContacto} from '../../controllers/GestionContacto/crudContacto.js';  // Asegúrate de que la ruta a tu controlador esté correcta
+import { createContacto , getContactos, deleteContacto, updateContacto} from '../../../controllers/ModuloUsuario/GestionContacto/crudContacto.js';  // Asegúrate de que la ruta a tu controlador esté correcta
 
 const router = Router();
 

@@ -1,6 +1,7 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
+import { auditoriaMiddleware } from "../../../middlewares/ModuloUsuario/auditoria.js";
 
-export const getRoles = async (req, res) => {
+export const getRoles = [auditoriaMiddleware, async (req, res) => {
   try {
     const roles = await pool.query("SELECT * FROM rol");
     res.json(roles[0]);  // Usar res.json() para enviar respuesta en formato JSON
@@ -8,7 +9,7 @@ export const getRoles = async (req, res) => {
     res.status(500).json({ error: "Error al obtener los roles" });
     console.log({ error: error.message });
   }
-};
+}];
 
 export const createRol = async (req, res) => {
   try {
