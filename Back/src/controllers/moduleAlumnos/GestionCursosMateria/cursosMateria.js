@@ -1,5 +1,4 @@
-import { pool } from "../../db.js";
-
+import { pool } from "../../../db.js";
 // Obtener todas las relaciones curso-materia
 export const getCursosMateria = async (req, res) => {
     try {

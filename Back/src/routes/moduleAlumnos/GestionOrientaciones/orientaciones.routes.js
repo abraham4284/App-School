@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createOrientacion, deleteOrientacion, getOrientaciones, updateOrientacion } from "../../../controllers/GestionOrientaciones/orientaciones.js";
+import { createOrientacion, deleteOrientacion, getOrientaciones, updateOrientacion } from "../../../controllers/moduleAlumnos/GestionOrientaciones/orientaciones.js";
 
 
 const router = Router();

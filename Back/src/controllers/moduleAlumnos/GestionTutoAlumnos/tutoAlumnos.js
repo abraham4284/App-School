@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
 
 // Obtener todas las relaciones tutor-alumno
 export const getTutoAlumnos = async (req, res) => {

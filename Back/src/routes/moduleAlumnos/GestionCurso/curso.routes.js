@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createCurso, deleteCurso, getCursos, updateCurso } from "../../../controllers/GestionCurso/curso.js";
+import { createCurso, deleteCurso, getCursos, updateCurso } from "../../../controllers/moduleAlumnos/GestionCurso/curso.js";
 
 
 const router = Router();

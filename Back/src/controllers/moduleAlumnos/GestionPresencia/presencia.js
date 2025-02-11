@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
 
 // Obtener todas las presencias
 export const getPresencias = async (req, res) => {

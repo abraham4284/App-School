@@ -1,4 +1,4 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
 
 // Obtener todas las fichas médicas
 export const getFichasMedicas = async (req, res) => {

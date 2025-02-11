@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { createNivel, deleteNivel, getNiveles, updateNivel } from "../../../controllers/GestionNiveles/niveles.js";
-
+import { createNivel, deleteNivel, getNiveles, updateNivel } from "../../../controllers/moduleAlumnos/GestionNiveles/niveles.js"
 
 const router = Router();
 
