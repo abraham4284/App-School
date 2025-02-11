@@ -54,10 +54,6 @@ app.use('/api/direcciones', direccionesRoutes);
 app.use('/api/contacto', contactoRoutes);
 app.post("/api/login", loginUsuario);
 
-// Iniciar el servidor
-app.listen(3000, () => {
-  console.log('Servidor funcionando en http://localhost:3000');
-});
 
 app.use("/api",coutasRoutes);
 app.use("/api",cuentasRoutes);
