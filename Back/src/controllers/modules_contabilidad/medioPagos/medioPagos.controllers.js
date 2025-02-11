@@ -1,4 +1,5 @@
-import { pool } from "../../db.js";
+import { pool } from "../../../db.js";
+
 
 export const getMedioPagos = async (req, res) => {
   try {

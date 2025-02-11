@@ -4,7 +4,7 @@ import {
   deleteCuentas,
   getCuentas,
   updateCuentas,
-} from "../../controllers/cuentas/cuentas.controllers.js";
+} from "../../../controllers/modules_contabilidad/cuentas/cuentas.controllers.js";
 
 const router = Router();
 

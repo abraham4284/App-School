@@ -4,7 +4,7 @@ import {
   deleteMedioDePago,
   getMedioPagos,
   updateMedioPagos,
-} from "../../controllers/medioPagos/medioPagos.controllers.js";
+} from "../../../controllers/modules_contabilidad/medioPagos/medioPagos.controllers.js";
 
 const router = Router();
 

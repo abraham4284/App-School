@@ -1,5 +1,5 @@
-import { pool } from "../../db.js";
-import { crearDetalleDeCuotas } from "../../helpers/cuotas/calcularFechaDeVencimiento.js";
+import { pool } from "../../../db.js";
+import { crearDetalleDeCuotas } from "../../../helpers/module_contabilidad/cuotas/calcularFechaDeVencimiento.js";
 
 export const getPlanCuotas = async (_, res) => {
   try {
@@ -16,6 +16,34 @@ export const getPlanCuotas = async (_, res) => {
       error: error.message,
       errorCompleto: error,
       message: "Error en getCuotas",
+    });
+  }
+};
+
+export const getPlanCuotasByIdAlumnos = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (id) {
+      const planCuotasByIdAlumnos = await pool.query(
+        "SELECT * FROM cuotas WHERE idAlumnos = ?",
+        [id]
+      );
+      if (planCuotasByIdAlumnos.length <= 0) {
+        console.log("No existe planes cargados");
+        return;
+      }
+
+      res.json(planCuotasByIdAlumnos[0]);
+      
+    } else {
+      console.log("Tiene que ingresar el id");
+    }
+  } catch (error) {
+    res.status(500).json({ error: "error en el servidor" });
+    console.log({
+      error: error.message,
+      errorCompleto: error,
+      message: "Error en getPlanCuotasByIdAlumnos",
     });
   }
 };
