@@ -18,7 +18,6 @@ import detalleCuotasRoutes from './routes/module_contabilidad/detalle_cuotas/det
 import pagosRoutes from './routes/module_contabilidad/pagos/pagos.routes.js';
 import recargosRoutes from './routes/module_contabilidad/recargos/recargos.routes.js'
 import reportesRoutes from './routes/module_contabilidad/reportes.cuotas/reportes.cuotas.routes.js'
-import coutasRoutes from './routes/cuotas/cuotas.routes.js'
 import alumnosRoutes from './routes/moduleAlumnos/GestionAlumnos/alumnos.routes.js'
 import tutorRoutes from './routes/moduleAlumnos/GestionTutor/tutor.routes.js'
 import cursosRoutes from './routes/moduleAlumnos/GestionCurso/curso.routes.js'
