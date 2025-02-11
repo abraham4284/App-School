@@ -11,7 +11,11 @@ export const pool = createPool({
     database: process.env.DB_NAME,
 });
 
-pool.getConnection((error, connection) => {
-    if (error) throw error;
-    console.log('Conectada correctamente', connection.threadId);
-});
+pool.getConnection()
+    .then((connection) => {
+        console.log('Conectada correctamente', connection.threadId);
+        connection.release();  // Asegúrate de liberar la conexión después de usarla
+    })
+    .catch((error) => {
+        console.error('Error al conectar a la base de datos:', error.message);
+    });
