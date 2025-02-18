@@ -29,7 +29,9 @@ import fichamedicaRoutes from './routes/moduleAlumnos/GestionFichaMedica/fichaMe
 import presenciaRoutes from './routes/moduleAlumnos/GestionPresencia/presencia.routes.js'
 import tutoAlumnosRoutes from './routes/moduleAlumnos/GestionTutoAlumnos/tutoalumnos.routes.js'
 import cursosMateriaRoutes from './routes/moduleAlumnos/GestionCursosMateria/cursosMateria.routes.js'
-
+import notasRoutes from './routes/moduleAlumnos/GestionNotas/notas.routes.js'
+import periodosRoutes from './routes/moduleAlumnos/GestionPeriodosAcademicos/periodosacademicos.routes.js'
+import evaluacionesRoutes from './routes/moduleAlumnos/GestionEvaluaciones/evaluaciones.routes.js'
 
 const app = express();
 
@@ -54,7 +56,10 @@ app.use('/api/direcciones', direccionesRoutes);
 app.use('/api/contacto', contactoRoutes);
 app.post("/api/login", loginUsuario);
 
-
+// Iniciar el servidor
+app.listen(3000, () => {
+  console.log('Servidor funcionando en http://localhost:3000');
+});
 
 app.use("/api",coutasRoutes);
 app.use("/api",cuentasRoutes);
@@ -76,6 +81,9 @@ app.use("/api/fichamedica", fichamedicaRoutes)
 app.use("/api/presencia", presenciaRoutes)
 app.use("/api/tutoalumnos", tutoAlumnosRoutes)
 app.use("/api/cursosmateria", cursosMateriaRoutes)
+app.use("/api/notas", notasRoutes)
+app.use("/api/periodos", periodosRoutes)
+app.use("/api/evaluaciones", evaluacionesRoutes)
 
 
 
