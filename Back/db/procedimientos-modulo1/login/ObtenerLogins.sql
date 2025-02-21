@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerLogins()
+BEGIN
+    SELECT * FROM login;
+END $$
+
+DELIMITER ;

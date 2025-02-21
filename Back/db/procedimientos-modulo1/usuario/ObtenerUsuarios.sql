@@ -1,0 +1,8 @@
+DELIMITER //
+
+CREATE PROCEDURE ObtenerUsuarios()
+BEGIN
+    SELECT * FROM usuarios;
+END //
+
+DELIMITER ;

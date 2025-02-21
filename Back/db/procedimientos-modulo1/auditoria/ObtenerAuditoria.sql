@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerAuditoria()
+BEGIN
+    SELECT * FROM auditoria;
+END $$
+
+DELIMITER ;

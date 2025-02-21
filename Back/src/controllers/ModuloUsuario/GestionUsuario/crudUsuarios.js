@@ -29,10 +29,7 @@ export const createUsuario = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const query = `
-      INSERT INTO usuarios (apellido, nombre, telefono, username, password, email, DNI, fechaNac, antiguedad, genero, estado, legajo, idRol) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    const query = 'CALL CrearUsuario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
     const values = [apellido, nombre, telefono, username, hashedPassword, email, DNI, fechaNac, antiguedad, genero, estado, legajo, idRol];
     const [result] = await pool.query(query, values);
