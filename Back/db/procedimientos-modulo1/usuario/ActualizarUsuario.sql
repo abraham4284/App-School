@@ -1,9 +1,7 @@
 DELIMITER //
 
 CREATE PROCEDURE ActualizarUsuario(
-    IN p_idUsuarios INT,
-    IN p_idRol INT,
-    IN p_apellido VARCHAR(100),
+     IN p_apellido VARCHAR(100),
     IN p_nombre VARCHAR(100),
     IN p_telefono VARCHAR(45),
     IN p_username VARCHAR(50),
@@ -14,11 +12,14 @@ CREATE PROCEDURE ActualizarUsuario(
     IN p_antiguedad VARCHAR(50),
     IN p_genero VARCHAR(45),
     IN p_estado VARCHAR(45),
-    IN p_legajo VARCHAR(45)
+    IN p_legajo VARCHAR(45),
+    IN p_idRol INT,
+    IN p_idUsuarios INT
 )
 BEGIN
-    UPDATE usuarios 
-    SET apellido = p_apellido,
+     UPDATE usuarios
+    SET 
+        apellido = p_apellido,
         nombre = p_nombre,
         telefono = p_telefono,
         username = p_username,
@@ -29,8 +30,9 @@ BEGIN
         antiguedad = p_antiguedad,
         genero = p_genero,
         estado = p_estado,
-        legajo = p_legajo
-    WHERE idUsuarios = p_idUsuarios AND idRol = p_idRol;
+        legajo = p_legajo,
+        idRol = p_idRol
+    WHERE idUsuarios = p_idUsuarios;
 END //
 
 DELIMITER ;
