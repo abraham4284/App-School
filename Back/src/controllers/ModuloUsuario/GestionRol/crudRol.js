@@ -1,15 +1,15 @@
 import { pool } from "../../../db.js";
 import { auditoriaMiddleware } from "../../../middlewares/ModuloUsuario/auditoria.js";
 
-export const getRoles = [auditoriaMiddleware, async (req, res) => {
+export const getRoles =  async (req, res) => {
   try {
-    const roles = await pool.query("SELECT * FROM rol");
+    const roles = await pool.query("CALL ObtenerRoles()");
     res.json(roles[0]);  // Usar res.json() para enviar respuesta en formato JSON
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los roles" });
     console.log({ error: error.message });
   }
-}];
+};
 
 export const createRol = async (req, res) => {
   try {
@@ -18,14 +18,18 @@ export const createRol = async (req, res) => {
       return res.status(400).json({ error: "El campo 'nombre' es obligatorio" });
     }
 
-    const query = "INSERT INTO rol (nombre) VALUES (?)";
-    const values = [nombre];
-    const [result] = await pool.query(query, values);
+    // Ejecutar el procedimiento almacenado
+    await pool.query("CALL CrearRol(?)", [nombre]);
+
+    // Obtener el ID generado
+    const [rows] = await pool.query("SELECT LAST_INSERT_ID() AS idRol");
+
     const newRol = {
-      idrol: result.insertId,
+      idrol: rows[0].idRol, // Usamos el ID recuperado
       nombre,
     };
-    res.status(201).json(newRol);  // Responder con el nuevo rol creado
+
+    res.status(201).json(newRol);
   } catch (error) {
     res.status(500).json({ error: "Error al crear el rol" });
     console.log({ error: error.message });
@@ -34,15 +38,15 @@ export const createRol = async (req, res) => {
 
 export const updateRol = async (req, res) => {
   try {
-    const { id } = req.params;
+    const idRol = parseInt(req.params.id, 10); // Convertir id a número
     const { nombre } = req.body;
 
     if (!nombre) {
       return res.status(400).json({ error: "El campo 'nombre' es obligatorio" });
     }
 
-    const query = "UPDATE rol SET nombre = ? WHERE idrol = ?";
-    const values = [nombre, id];
+    const query = "CALL ActualizarRol(?, ?)";
+    const values = [idRol, nombre];
     const [rows] = await pool.query(query, values);
 
     if (rows.affectedRows === 0) {
@@ -50,7 +54,7 @@ export const updateRol = async (req, res) => {
     }
 
     // Consultar el rol actualizado
-    const [rowsSelect] = await pool.query("SELECT * FROM rol WHERE idrol = ?", [id]);
+    const [rowsSelect] = await pool.query("CALL ObtenerRolPorID(?)", [idRol]);
     res.json(rowsSelect[0]);
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el rol" });

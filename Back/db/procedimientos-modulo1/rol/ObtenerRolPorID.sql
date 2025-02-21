@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerRolPorID(IN p_idRol INT)
+BEGIN
+    SELECT * FROM rol WHERE idRol = p_idRol;
+END $$
+
+DELIMITER ;

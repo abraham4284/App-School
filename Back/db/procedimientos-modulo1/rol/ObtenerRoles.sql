@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerRoles()
+BEGIN
+    SELECT * FROM rol;
+END $$
+
+DELIMITER ;

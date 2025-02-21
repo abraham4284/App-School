@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE EliminarRol(IN p_idRol INT)
+BEGIN
+    DELETE FROM rol WHERE idRol = p_idRol;
+END $$
+
+DELIMITER ;

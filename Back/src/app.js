@@ -32,6 +32,9 @@ import cursosMateriaRoutes from './routes/moduleAlumnos/GestionCursosMateria/cur
 import notasRoutes from './routes/moduleAlumnos/GestionNotas/notas.routes.js'
 import periodosRoutes from './routes/moduleAlumnos/GestionPeriodosAcademicos/periodosacademicos.routes.js'
 import evaluacionesRoutes from './routes/moduleAlumnos/GestionEvaluaciones/evaluaciones.routes.js'
+import { validarToken } from './middlewares/ModuloUsuario/validarToken.js';
+import { auditoriaMiddleware } from './middlewares/ModuloUsuario/auditoria.js';
+
 
 const app = express();
 
