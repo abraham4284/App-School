@@ -2,7 +2,7 @@ import { pool } from "../../../db.js";
 
 export const getContactos = async (req, res) => {
   try {
-    const contactos = await pool.query("SELECT * FROM contacto");
+    const contactos = await pool.query('CALL ObtenerContactos()');
     res.json(contactos[0]);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los contactos" });
@@ -18,17 +18,17 @@ export const createContacto = async (req, res) => {
       return res.status(400).json({ error: "Todos los campos obligatorios deben ser completados." });
     }
 
-    const query = `
-      INSERT INTO contacto (nombre, celular, email, idUsuarios) 
-      VALUES (?, ?, ?, ?)
-    `;
+    const query = `CALL InsertarContacto(?, ?, ?, ?)`;
 
     const values = [nombre, celular, email, idUsuarios];
 
     const [result] = await pool.query(query, values);
 
+    const [rows] = await pool.query("SELECT LAST_INSERT_ID() AS idContacto");
+    const idContacto = rows[0].idContacto;
+
     const newContacto = {
-      idContacto: result.insertId,
+      idContacto,
       nombre,
       celular,
       email,
@@ -44,22 +44,19 @@ export const createContacto = async (req, res) => {
 
 export const updateContacto = async (req, res) => {
   try {
-    const { id } = req.params;
+    const idContacto = parseInt(req.params.id, 10);
     const { nombre, celular, email, idUsuarios } = req.body;
 
-    const [contactoExists] = await pool.query("SELECT * FROM contacto WHERE idContacto = ?", [id]);
+    const [contactoExists] = await pool.query('CALL ObtenerContactoPorID(?)', [idContacto]);
 
     if (contactoExists.length === 0) {
       return res.status(404).json({ error: "Contacto no encontrado" });
     }
 
-    const query = `
-      UPDATE contacto 
-      SET nombre = ?, celular = ?, email = ?, idUsuarios = ?
-      WHERE idContacto = ?
-    `;
+    const query = 'CALL ActualizarContacto(?, ?, ?, ?, ?)';
 
-    const values = [nombre, celular, email, idUsuarios, id];
+
+    const values = [idContacto, nombre, celular, email, idUsuarios];
 
     const [result] = await pool.query(query, values);
 
@@ -67,7 +64,7 @@ export const updateContacto = async (req, res) => {
       return res.status(404).json({ error: "No se pudo actualizar el contacto" });
     }
 
-    const [updatedContacto] = await pool.query("SELECT * FROM contacto WHERE idContacto = ?", [id]);
+    const [updatedContacto] = await pool.query('CALL ObtenerContactoPorID(?)', [idContacto]);
 
     res.json(updatedContacto[0]);
   } catch (error) {
@@ -79,14 +76,14 @@ export const updateContacto = async (req, res) => {
 export const deleteContacto = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const [contactoExists] = await pool.query("SELECT * FROM contacto WHERE idContacto = ?", [id]);
+    const idContacto = parseInt(req.params.id, 10);
+    const [contactoExists] = await pool.query('CALL ObtenerContactoPorID(?)', [idContacto]);
 
     if (contactoExists.length === 0) {
       return res.status(404).json({ error: "Contacto no encontrado" });
     }
 
-    const [result] = await pool.query("DELETE FROM contacto WHERE idContacto = ?", [id]);
+    const [result] = await pool.query('CALL EliminarContacto(?)', [idContacto]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "No se pudo eliminar el contacto" });
