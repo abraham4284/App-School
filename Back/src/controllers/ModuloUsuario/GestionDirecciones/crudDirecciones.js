@@ -2,7 +2,7 @@ import { pool } from "../../../db.js";
 
 export const getDirecciones = async (req, res) => {
   try {
-    const direcciones = await pool.query("SELECT * FROM direcciones");
+    const direcciones = await pool.query('CALL ObtenerDirecciones()');
     res.json(direcciones[0]); // Responder con la lista de direcciones
   } catch (error) {
     res.status(500).json({ error: "Error al obtener las direcciones" });
@@ -19,10 +19,7 @@ export const createDireccion = async (req, res) => {
       return res.status(400).json({ error: "Todos los campos obligatorios deben ser completados." });
     }
 
-    const query = `
-      INSERT INTO direcciones (codigoPostal, calle, numero, piso, departamento, localidad, provincia, descripcion, idUsuarios) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+    const query =' CALL InsertarDireccion(?, ?, ?, ?, ?, ?, ?, ?, ?);';
 
     const values = [codigoPostal, calle, numero, piso, departamento, localidad, provincia, descripcion, idUsuarios];
 
@@ -45,21 +42,17 @@ export const updateDireccion = async (req, res) => {
   try {
     const { id } = req.params;
     const { codigoPostal, calle, numero, piso, departamento, localidad, provincia, descripcion, idUsuarios } = req.body;
-
+    const idDirecciones = parseInt(req.params.id, 10);
     // Verificar si la dirección existe
-    const [direccionExists] = await pool.query("SELECT * FROM direcciones WHERE idDirecciones = ?", [id]);
+    const [direccionExists] = await pool.query('CALL ObtenerDireccionPorID(?)', [idDirecciones]);
 
     if (direccionExists.length === 0) {
       return res.status(404).json({ error: "Dirección no encontrada" });
     }
 
-    const query = `
-      UPDATE direcciones 
-      SET codigoPostal = ?, calle = ?, numero = ?, piso = ?, departamento = ?, localidad = ?, provincia = ?, descripcion = ?, idUsuarios = ?
-      WHERE idDirecciones = ?
-    `;
+    const query = 'CALL ActualizarDireccion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
 
-    const values = [codigoPostal, calle, numero, piso, departamento, localidad, provincia, descripcion, idUsuarios, id];
+    const values = [idDirecciones, codigoPostal, calle, numero, piso, departamento, localidad, provincia, descripcion, idUsuarios];
 
     const [result] = await pool.query(query, values);
 
@@ -68,8 +61,8 @@ export const updateDireccion = async (req, res) => {
     }
 
     // Obtener la dirección actualizada
-    const [updatedDireccion] = await pool.query("SELECT * FROM direcciones WHERE idDirecciones = ?", [id]);
-
+    const [updatedDireccion] = await pool.query('CALL ObtenerDireccionPorID(?)',[idDirecciones]);
+    
     res.json(updatedDireccion[0]);
 
   } catch (error) {
@@ -81,16 +74,16 @@ export const updateDireccion = async (req, res) => {
 export const deleteDireccion = async (req, res) => {
   try {
     const { id } = req.params;
-
+    const idDirecciones = parseInt(req.params.id, 10);
     // Verificar si la dirección existe
-    const [direccionExists] = await pool.query("SELECT * FROM direcciones WHERE idDirecciones = ?", [id]);
+    const [direccionExists] = await pool.query('CALL ObtenerDireccionPorID(?)', [idDirecciones]);
 
     if (direccionExists.length === 0) {
       return res.status(404).json({ error: "Dirección no encontrada" });
     }
 
     // Eliminar dirección
-    const [result] = await pool.query("DELETE FROM direcciones WHERE idDirecciones = ?", [id]);
+    const [result] = await pool.query('CALL EliminarDireccion(?)', [idDirecciones]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "No se pudo eliminar la dirección" });
