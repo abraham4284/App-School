@@ -26,7 +26,8 @@ import orientacionesRoutes from './routes/moduleAlumnos/GestionOrientaciones/ori
 import nivelesRoutes from './routes/moduleAlumnos/GestionNiveles/niveles.routes.js'
 import turnosRoutes from './routes/moduleAlumnos/GestionTurnos/turnos.routes.js'
 import fichamedicaRoutes from './routes/moduleAlumnos/GestionFichaMedica/fichaMedica.routes.js'
-import presenciaRoutes from './routes/moduleAlumnos/GestionPresencia/presencia.routes.js'
+import presenciaAlumnosRoutes from './routes/moduleAlumnos/GestionPresenciaAlumnos/presenciaAlumnos.routes.js'
+import motivosAlumnosRoutes from './routes/moduleAlumnos/GestionMotivosAlumnos/motivosAlumnos.routes.js'
 import tutoAlumnosRoutes from './routes/moduleAlumnos/GestionTutoAlumnos/tutoalumnos.routes.js'
 import cursosMateriaRoutes from './routes/moduleAlumnos/GestionCursosMateria/cursosMateria.routes.js'
 import notasRoutes from './routes/moduleAlumnos/GestionNotas/notas.routes.js'
@@ -77,7 +78,8 @@ app.use("/api/orientaciones", orientacionesRoutes)
 app.use("/api/niveles", nivelesRoutes)
 app.use("/api/turnos", turnosRoutes)
 app.use("/api/fichamedica", fichamedicaRoutes)
-app.use("/api/presencia", presenciaRoutes)
+app.use("/api/presenciaAlumnos", presenciaAlumnosRoutes)
+app.use("/api/motivosAlumnos", motivosAlumnosRoutes)
 app.use("/api/tutoalumnos", tutoAlumnosRoutes)
 app.use("/api/cursosmateria", cursosMateriaRoutes)
 app.use("/api/notas", notasRoutes)
