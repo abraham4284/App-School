@@ -1,54 +1,56 @@
-import { pool } from "../../../db.js";
+import { pool } from '../../../db.js';  // Import del pool de la base de datos
 
-export const getOrientaciones = async (req, res) => {
+// Obtener todas las orientaciones
+export const obtenerOrientaciones = async (req, res) => {
   try {
-    const orientaciones = await pool.query("SELECT * FROM orientaciones");
-    res.json(orientaciones[0]);
+    const [rows] = await pool.query('CALL ObtenerOrientaciones()');
+    res.json(rows[0]); // Devuelve el primer array de resultados
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener las orientaciones" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const createOrientacion = async (req, res) => {
+// Obtener una orientacion por ID
+export const obtenerOrientacionPorId = async (req, res) => {
+  try {
+    const { idOrientacion } = req.params;
+    const [rows] = await pool.query('CALL ObtenerOrientacionPorId(?)', [idOrientacion]);
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Insertar una nueva orientacion
+export const insertarOrientacion = async (req, res) => {
   try {
     const { nombre } = req.body;
-    const query = "INSERT INTO orientaciones (nombre) VALUES (?)";
-    const values = [nombre];
-    const [result] = await pool.query(query, values);
-    const newOrientacion = { idOrientaciones: result.insertId, nombre };
-    res.status(201).json(newOrientacion);
+    await pool.query('CALL InsertarOrientacion(?)', [nombre]);
+    res.json({ message: 'Orientación insertada correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear la orientacion" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const updateOrientacion = async (req, res) => {
+// Actualizar una orientacion existente
+export const actualizarOrientacion = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idOrientacion } = req.params;
     const { nombre } = req.body;
-    const query = "UPDATE orientaciones SET nombre = ? WHERE idOrientaciones = ?";
-    const values = [nombre, id];
-    const [rows] = await pool.query(query, values);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Orientacion no encontrada" });
-    }
-    const [updatedOrientacion] = await pool.query("SELECT * FROM orientaciones WHERE idOrientaciones = ?", [id]);
-    res.json(updatedOrientacion[0]);
+    await pool.query('CALL ActualizarOrientacion(?, ?)', [idOrientacion, nombre]);
+    res.json({ message: 'Orientación actualizada correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar la orientacion" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const deleteOrientacion = async (req, res) => {
+// Eliminar una orientacion
+export const eliminarOrientacion = async (req, res) => {
   try {
-    const { id } = req.params;
-    const query = "DELETE FROM orientaciones WHERE idOrientaciones = ?";
-    const [rows] = await pool.query(query, [id]);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Orientacion no encontrada" });
-    }
-    res.status(200).json({ message: "Orientación eliminada correctamente" });
+    const { idOrientacion } = req.params;
+    await pool.query('CALL EliminarOrientacion(?)', [idOrientacion]);
+    res.json({ message: 'Orientación eliminada correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar la orientacion" });
+    res.status(500).json({ error: error.message });
   }
 };

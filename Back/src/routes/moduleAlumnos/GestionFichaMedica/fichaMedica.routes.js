@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createFichaMedica, deleteFichaMedica, getFichasMedicas, updateFichaMedica } from "../../../controllers/moduleAlumnos/GestionFichaMedica/fichaMedica.js";
+import express from 'express';
+import { actualizarFichaMedica, eliminarFichaMedica, insertarFichaMedica, obtenerFichaMedicaPorId, obtenerFichasMedicas } from '../../../controllers/moduleAlumnos/GestionFichaMedica/fichaMedica.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getFichasMedicas);
-router.post("/", createFichaMedica);
-router.put("/:id", updateFichaMedica);
-router.delete("/:id", deleteFichaMedica);
+router.get('/', obtenerFichasMedicas);
+router.get('/:idFichaMedica', obtenerFichaMedicaPorId);
+router.post('/', insertarFichaMedica);
+router.put('/:idFichaMedica', actualizarFichaMedica);
+router.delete('/:idFichaMedica', eliminarFichaMedica);
 
 export default router;

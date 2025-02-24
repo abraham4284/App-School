@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createTurno, deleteTurno, getTurnos, updateTurno } from "../../../controllers/moduleAlumnos/GestionTurnos/turnos.js";
+import express from 'express';
+import { actualizarTurno, eliminarTurno, insertarTurno, obtenerTurnoPorId, obtenerTurnos } from '../../../controllers/moduleAlumnos/GestionTurnos/turnos.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getTurnos);
-router.post("/", createTurno);
-router.put("/:id", updateTurno);
-router.delete("/:id", deleteTurno);
+router.get('/', obtenerTurnos);
+router.get('/:idTurno', obtenerTurnoPorId);
+router.post('/', insertarTurno);
+router.put('/:idTurno', actualizarTurno);
+router.delete('/:idTurno', eliminarTurno);
 
 export default router;

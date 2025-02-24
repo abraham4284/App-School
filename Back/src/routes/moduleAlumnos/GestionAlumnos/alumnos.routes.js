@@ -1,12 +1,13 @@
-import { Router } from "express";
-import { createAlumno, deleteAlumno, getAlumnos, updateAlumno } from "../../../controllers/moduleAlumnos/GestionAlumnos/alumnos.js";
+import express from 'express';
+import { actualizarAlumno, eliminarAlumno, insertarAlumno, obtenerAlumnoPorId, obtenerAlumnos } from '../../../controllers/moduleAlumnos/GestionAlumnos/alumnos.js';
 
 
-const router = Router();
+const router = express.Router();
 
-router.get("/", getAlumnos);
-router.post("/", createAlumno);
-router.put("/:id", updateAlumno);
-router.delete("/:id", deleteAlumno);
+router.get('/', obtenerAlumnos);
+router.get('/:id', obtenerAlumnoPorId);
+router.post('/', insertarAlumno);
+router.put('/:id', actualizarAlumno);
+router.delete('/:id', eliminarAlumno);
 
-export default router; 
+export default router;

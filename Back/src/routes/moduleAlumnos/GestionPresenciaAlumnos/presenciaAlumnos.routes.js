@@ -1,12 +1,12 @@
-import express from "express";
-import { createPresencia, deletePresencia, getPresencias, updatePresencia } from "../../../controllers/moduleAlumnos/GestionPresenciaAlumnos/presenciaAlumnos.js";
-
+import express from 'express';
+import { actualizarPresenciaAlumno, eliminarPresenciaAlumno, insertarPresenciaAlumno, obtenerPresenciaAlumnoPorId, obtenerPresenciaAlumnos } from '../../../controllers/moduleAlumnos/GestionPresenciaAlumnos/presenciaAlumnos.js';
 
 const router = express.Router();
 
-router.get("/presencia", getPresencias);
-router.post("/presencia", createPresencia);
-router.put("/presencia/:id", updatePresencia);
-router.delete("/presencia/:id", deletePresencia);
+router.get('/', obtenerPresenciaAlumnos);
+router.get('/:idRegistroAsistenciaAlumnos', obtenerPresenciaAlumnoPorId);
+router.post('/', insertarPresenciaAlumno);
+router.put('/:idRegistroAsistenciaAlumnos', actualizarPresenciaAlumno);
+router.delete('/:idRegistroAsistenciaAlumnos', eliminarPresenciaAlumno);
 
 export default router;

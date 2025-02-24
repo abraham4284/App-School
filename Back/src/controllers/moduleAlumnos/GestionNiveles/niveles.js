@@ -1,54 +1,56 @@
-import { pool } from "../../../db.js";
+import { pool } from '../../../db.js';  // Import del pool de la base de datos
 
-export const getNiveles = async (req, res) => {
+// Obtener todos los niveles
+export const obtenerNiveles = async (req, res) => {
   try {
-    const niveles = await pool.query("SELECT * FROM niveles");
-    res.json(niveles[0]);
+    const [rows] = await pool.query('CALL ObtenerNiveles()');
+    res.json(rows[0]); // Devuelve el primer array de resultados
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener los niveles" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const createNivel = async (req, res) => {
+// Obtener un nivel por ID
+export const obtenerNivelPorId = async (req, res) => {
+  try {
+    const { idNivel } = req.params;
+    const [rows] = await pool.query('CALL ObtenerNivelPorId(?)', [idNivel]);
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Insertar un nuevo nivel
+export const insertarNivel = async (req, res) => {
   try {
     const { nombre } = req.body;
-    const query = "INSERT INTO niveles (nombre) VALUES (?)";
-    const values = [nombre];
-    const [result] = await pool.query(query, values);
-    const newNivel = { idNiveles: result.insertId, nombre };
-    res.status(201).json(newNivel);
+    await pool.query('CALL InsertarNivel(?)', [nombre]);
+    res.json({ message: 'Nivel insertado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el nivel" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const updateNivel = async (req, res) => {
+// Actualizar un nivel existente
+export const actualizarNivel = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idNivel } = req.params;
     const { nombre } = req.body;
-    const query = "UPDATE niveles SET nombre = ? WHERE idNiveles = ?";
-    const values = [nombre, id];
-    const [rows] = await pool.query(query, values);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Nivel no encontrado" });
-    }
-    const [updatedNivel] = await pool.query("SELECT * FROM niveles WHERE idNiveles = ?", [id]);
-    res.json(updatedNivel[0]);
+    await pool.query('CALL ActualizarNivel(?, ?)', [idNivel, nombre]);
+    res.json({ message: 'Nivel actualizado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el nivel" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const deleteNivel = async (req, res) => {
+// Eliminar un nivel
+export const eliminarNivel = async (req, res) => {
   try {
-    const { id } = req.params;
-    const query = "DELETE FROM niveles WHERE idNiveles = ?";
-    const [rows] = await pool.query(query, [id]);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Nivel no encontrado" });
-    }
-    res.status(200).json({ message: "Nivel eliminado correctamente" });
+    const { idNivel } = req.params;
+    await pool.query('CALL EliminarNivel(?)', [idNivel]);
+    res.json({ message: 'Nivel eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el nivel" });
+    res.status(500).json({ error: error.message });
   }
 };

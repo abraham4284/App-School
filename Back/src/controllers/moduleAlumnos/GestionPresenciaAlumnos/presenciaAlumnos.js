@@ -1,51 +1,56 @@
-import { pool } from "../../../db.js";
+import { pool } from '../../../db.js';  // Importa la conexión con la base de datos
 
-export const getPresencias = async (req, res) => {
+// Obtener todos los registros de asistencia de los alumnos
+export const obtenerPresenciaAlumnos = async (req, res) => {
   try {
-    const [presencias] = await pool.query("SELECT * FROM presencia");
-    res.json(presencias);
-  } catch (error) {
-    res.status(500).json({ error: "Error al obtener las asistencias de alumnos" });
-  }
-};
-
-export const createPresencia = async (req, res) => {
-  try {
-    const { fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos } = req.body;
-    const [result] = await pool.query(
-      "INSERT INTO presencia (fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos) VALUES (?, ?, ?, ?, ?, ?)",
-      [fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos]
-    );
-    res.status(201).json({ message: "Asistencia registrada", id: result.insertId });
+    const [rows] = await pool.query('CALL ObtenerPresenciaAlumnos()');
+    res.json(rows[0]);  // Devuelve el primer array de resultados
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const updatePresencia = async (req, res) => {
+// Obtener un registro de asistencia de un alumno por ID
+export const obtenerPresenciaAlumnoPorId = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos } = req.body;
-    const [rows] = await pool.query(
-      "UPDATE presencia SET fecha = ?, hora = ?, estado = ?, justificado = ?, idAlumnos = ?, idMotivosAlumnos = ? WHERE idregistroAsistenciaAlumnos = ?",
-      [fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos, id]
-    );
-    if (rows.affectedRows === 0) return res.status(404).json({ error: "Registro no encontrado" });
-
-    res.json({ message: "Asistencia actualizada" });
+    const { idRegistroAsistenciaAlumnos } = req.params;
+    const [rows] = await pool.query('CALL ObtenerPresenciaAlumnoPorId(?)', [idRegistroAsistenciaAlumnos]);
+    res.json(rows[0]);  // Devuelve el primer resultado
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar la asistencia" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const deletePresencia = async (req, res) => {
+// Insertar un nuevo registro de asistencia
+export const insertarPresenciaAlumno = async (req, res) => {
   try {
-    const { id } = req.params;
-    const [rows] = await pool.query("DELETE FROM presencia WHERE idregistroAsistenciaAlumnos = ?", [id]);
-    if (rows.affectedRows === 0) return res.status(404).json({ error: "Registro no encontrado" });
-
-    res.json({ message: "Asistencia eliminada" });
+    const { fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos } = req.body;
+    await pool.query('CALL InsertarPresenciaAlumno(?, ?, ?, ?, ?, ?)', [fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos]);
+    res.json({ message: 'Registro de asistencia insertado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar la asistencia" });
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Actualizar un registro de asistencia existente
+export const actualizarPresenciaAlumno = async (req, res) => {
+  try {
+    const { idRegistroAsistenciaAlumnos } = req.params;
+    const { fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos } = req.body;
+    await pool.query('CALL ActualizarPresenciaAlumno(?, ?, ?, ?, ?, ?, ?)', [idRegistroAsistenciaAlumnos, fecha, hora, estado, justificado, idAlumnos, idMotivosAlumnos]);
+    res.json({ message: 'Registro de asistencia actualizado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Eliminar un registro de asistencia
+export const eliminarPresenciaAlumno = async (req, res) => {
+  try {
+    const { idRegistroAsistenciaAlumnos } = req.params;
+    await pool.query('CALL EliminarPresenciaAlumno(?)', [idRegistroAsistenciaAlumnos]);
+    res.json({ message: 'Registro de asistencia eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };

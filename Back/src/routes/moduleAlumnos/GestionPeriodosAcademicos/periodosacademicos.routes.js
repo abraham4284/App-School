@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createPeriodoAcademico, deletePeriodoAcademico, getPeriodosAcademicos, updatePeriodoAcademico } from "../../../controllers/moduleAlumnos/GestionPeriodosAcademicos/periodosacademicos.js";
+import express from 'express';
+import { actualizarPeriodoAcademico, eliminarPeriodoAcademico, insertarPeriodoAcademico, obtenerPeriodoAcademicoPorId, obtenerPeriodosAcademicos } from '../../../controllers/moduleAlumnos/GestionPeriodosAcademicos/periodosacademicos.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getPeriodosAcademicos);
-router.post("/", createPeriodoAcademico);
-router.put("/:id", updatePeriodoAcademico);
-router.delete("/:id", deletePeriodoAcademico);
+router.get('/', obtenerPeriodosAcademicos);
+router.get('/:idPeriodoAcademico', obtenerPeriodoAcademicoPorId);
+router.post('/', insertarPeriodoAcademico);
+router.put('/:idPeriodoAcademico', actualizarPeriodoAcademico);
+router.delete('/:idPeriodoAcademico', eliminarPeriodoAcademico);
 
 export default router;

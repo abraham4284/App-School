@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createTutor, deleteTutor, getTutores, updateTutor } from "../../../controllers/moduleAlumnos/GestionTutor/tutor.js";
+import express from 'express';
+import { actualizarTutor, eliminarTutor, insertarTutor, obtenerTutorPorId, obtenerTutores } from '../../../controllers/moduleAlumnos/GestionTutor/tutor.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getTutores);  // Obtener todos los tutores
-router.post("/", createTutor);  // Crear un nuevo tutor
-router.put("/:id", updateTutor);  // Actualizar un tutor existente
-router.delete("/:id", deleteTutor);  // Eliminar un tutor
+router.get('/', obtenerTutores);
+router.get('/:idTutor', obtenerTutorPorId);
+router.post('/', insertarTutor);
+router.put('/:idTutor', actualizarTutor);
+router.delete('/:idTutor', eliminarTutor);
 
 export default router;

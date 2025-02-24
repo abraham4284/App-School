@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createNota, deleteNota, getNotas, updateNota } from "../../../controllers/moduleAlumnos/GestionNotas/notas.js";
+import express from 'express';
+import { actualizarNota, eliminarNota, insertarNota, obtenerNotaPorId, obtenerNotas } from '../../../controllers/moduleAlumnos/GestionNotas/notas.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getNotas);
-router.post("/", createNota);
-router.put("/:id", updateNota);
-router.delete("/:id", deleteNota);
+router.get('/', obtenerNotas);
+router.get('/:idNota', obtenerNotaPorId);
+router.post('/', insertarNota);
+router.put('/:idNota', actualizarNota);
+router.delete('/:idNota', eliminarNota);
 
 export default router;
