@@ -1,12 +1,13 @@
-import { Router } from "express";
-import { createCurso, deleteCurso, getCursos, updateCurso } from "../../../controllers/moduleAlumnos/GestionCurso/curso.js";
+import express from 'express';
+import { actualizarCurso, eliminarCurso, insertarCurso, obtenerCursoPorId, obtenerCursos } from '../../../controllers/moduleAlumnos/GestionCurso/curso.js';
 
 
-const router = Router();
+const router = express.Router();
 
-router.get("/", getCursos);
-router.post("/", createCurso);
-router.put("/:id", updateCurso);
-router.delete("/:id", deleteCurso);
+router.get('/', obtenerCursos);
+router.get('/:id', obtenerCursoPorId);
+router.post('/', insertarCurso);
+router.put('/:id', actualizarCurso);
+router.delete('/:id', eliminarCurso);
 
 export default router;
