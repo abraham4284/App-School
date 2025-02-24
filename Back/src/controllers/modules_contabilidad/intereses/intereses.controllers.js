@@ -2,9 +2,9 @@ import { pool } from "../../../db.js";
 
 export const getIntereses = async (req, res) => {
   try {
-    const intereses = await pool.query("SELECT * FROM intereses");
+    const intereses = await pool.query("CALL getIntereses()");
     if (intereses.length > 0) {
-      res.json(intereses[0]);
+      res.json(intereses[0][0]);
       return;
     }
   } catch (error) {
@@ -34,7 +34,7 @@ export const createIntereses = async (req, res) => {
     }
 
     const queryInsert =
-      "INSERT INTO intereses (porcentaje, dias) VALUES (?, ?)";
+      "CALL createIntereses(?,?)";
     const values = [porcentaje, dias];
     const [result] = await pool.query(queryInsert, values);
 
@@ -62,7 +62,7 @@ export const updateIntereses = async (req, res) => {
     const { porcentaje, dias } = req.body;
     if (typeof porcentaje === "number" && typeof dias === "number") {
       const queryUpdate =
-        "UPDATE intereses SET porcentaje = ?, dias = ? WHERE idIntereses = ?";
+        "CALL updateIntereses(?,?,?)";
       const [rows] = await pool.query(queryUpdate, [porcentaje, dias, id]);
 
       if (rows.affectedRows === 0) {
@@ -71,7 +71,7 @@ export const updateIntereses = async (req, res) => {
           .json({ message: " No se encontro el interes a actualizar " });
       }
       const [rowSelect] = await pool.query(
-        "SELECT * FROM intereses WHERE idIntereses = ?",
+        "CALL getInteresById(?)",
         [id]
       );
       res.json(rowSelect[0]);
@@ -91,7 +91,7 @@ export const deleteInteres = async (req, res) => {
   try {
     const { id } = req.params;
     if (id) {
-      const queryDelete = "DELETE FROM intereses WHERE idIntereses = ?";
+      const queryDelete = "CALL deleteIntereses(?)";
       const [rows] = await pool.query(queryDelete, [id]);
 
       rows.affectedRows === 0

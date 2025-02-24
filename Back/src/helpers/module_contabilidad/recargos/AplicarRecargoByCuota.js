@@ -13,10 +13,11 @@ export const aplicarRecargoByCuota = async (
     let valorFinalCuota = parseFloat(montoUnitario) + parseFloat(recargo);
     let nuevoTotalPlan = parseFloat(totalPlan) + parseFloat(recargo);
 
+    
     const queryUpdateDetalleCuotas =
-      "UPDATE detallecuota SET recargo = ?, valorFinalCuota = ?, idIntereses = ? WHERE idDetalleCuota = ?";
+      "CALL createRecargosByCuotas(?,?,?,?)";
     const queryUpdatePlanCuotas =
-      "UPDATE cuotas SET total = ? WHERE idCuotas = ?";
+      "CALL updateCuotasByRecargos(?,?)";
 
     const valuesDetalleCuotas = [
       recargo,

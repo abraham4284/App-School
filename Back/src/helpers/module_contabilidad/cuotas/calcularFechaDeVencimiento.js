@@ -27,12 +27,8 @@ export const crearDetalleDeCuotas = async (
         const fechaVencimientoFormateada = fechaVencimiento
           .toISOString()
           .slice(0, 10);
-
-        // Creamos el registro de los detalle cuotas
-        const queryInsertDetalleCuotas = `
-        INSERT INTO detalleCuota (numCuota,montoUnitario,fechaInicio, fechaVto, estado, idCuotas)
-        VALUES(?,?,?,?,?,?)
-        `;
+       
+        const queryInsertDetalleCuotas = " CALL createDetalleCuotas(?,?,?,?,?,?) ";
         const values = [
           nCuotas,
           montoCuotas,

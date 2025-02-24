@@ -5,11 +5,11 @@ export const getDetalleCuotasByIdCuotas = async (req, res) => {
     const { id } = req.params;
     if (id) {
       const querySelectByIdCuotas =
-        "SELECT * FROM detalleCuota WHERE idCuotas = ?";
+        "CALL getIdDetalleCuotasByIdCuotas(?)";
       const detalleCuotasByIdCuotas = await pool.query(querySelectByIdCuotas, [
         id,
       ]);
-      res.json(detalleCuotasByIdCuotas[0]);
+      res.json(detalleCuotasByIdCuotas[0][0]);
     } else {
       res
         .status(404)

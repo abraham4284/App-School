@@ -11,23 +11,24 @@ export const getReporteDetalleCuotasByIdCuotas = async (req, res) => {
         .json({ message: "El id no puede ser nulo o indefinido" });
     }
 
-    const queryDetalleCuotas = "SELECT * FROM detallecuota WHERE idCuotas = ?";
-    const queryIntereses = "SELECT * FROM intereses ";
+    const queryDetalleCuotas = "CALL getIdDetalleCuotasByIdCuotas(?)";
+    const queryIntereses = "CALL getIntereses()";
     const [detalleCuotas] = await pool.query(queryDetalleCuotas, [id]);
     const [intereses] = await pool.query(queryIntereses);
 
-    const { fechaVto, montoUnitario } =
-      detalleCuotas.length > 0 ? detalleCuotas[0] : {};
+
+    // const { fechaVto, montoUnitario } =
+    //   detalleCuotas.length > 0 ? detalleCuotas[0] : {};
     // const { porcentaje, dias } = intereses.length > 0 ? intereses[0] : {};
 
-    const reporteDetalleCuota = detalleCuotas.map((el) => {
+    const reporteDetalleCuota = detalleCuotas[0].map((el) => {
       const { diferenciaDias } = calcularDiasAtrasos(el.fechaVto);
 
       let estado = "";
       let recargoCalculado = 0;
       let cuotasConRecargo = 0;
 
-      intereses.map((data) => {
+      intereses[0].map((data) => {
         if (diferenciaDias < 0) {
           const defDias = Math.abs(diferenciaDias);
           if (defDias > el.dias || defDias > 15) {

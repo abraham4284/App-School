@@ -2,9 +2,28 @@ import { pool } from "../../../db.js";
 
 export const getCuentas = async (req, res) => {
   try {
-    const cuentas = await pool.query("SELECT * FROM cuentas");
+    const cuentas = await pool.query("CALL getCuentas()");
     if (cuentas.length > 0) {
-      res.json(cuentas[0]);
+      res.json(cuentas[0][0]);
+      return;
+    }
+
+    res.status(404).json("No se encontro el contenido solicitado");
+  } catch (error) {
+    res.status(500).json({ error: "error en el servidor" });
+    console.log({
+      error: error.message,
+      errorCompleto: error,
+      message: "Error en getCuentas",
+    });
+  }
+};
+export const getIdCuentas = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [ result ] = await pool.query("CALL getCuentasById(?)",[id]);
+    if (result.length > 0) {
+      res.json(result[0]);
       return;
     }
 
@@ -27,8 +46,7 @@ export const createCuentas = async (req, res) => {
       typeof CBU_CVU === "string" &&
       typeof alias === "string"
     ) {
-      const queryInsertCuentas =
-        "INSERT INTO cuentas (nombre, CBU_CVU, alias) VALUES (?,?,?) ";
+      const queryInsertCuentas = "CALL createCuentas(?,?,?)";
       const values = [nombre, CBU_CVU, alias];
       const [result] = await pool.query(queryInsertCuentas, values);
       const nuevaCuenta = {
@@ -38,10 +56,15 @@ export const createCuentas = async (req, res) => {
         alias,
       };
       res.status(201).json(nuevaCuenta);
-      
+      return;
     }
 
-    res.status(400).json({ message: "Reviste que los datos ingreseados esten en el formato correcto" });
+    res
+      .status(400)
+      .json({
+        message:
+          "Reviste que los datos ingreseados esten en el formato correcto",
+      });
   } catch (error) {
     res.status(500).json({ error: "error en el servidor" });
     console.log({
@@ -62,9 +85,9 @@ export const updateCuentas = async (req, res) => {
       typeof alias === "string"
     ) {
       const queryUpdate = `
-            UPDATE cuentas SET nombre = ?, CBU_CVU = ?, alias = ? WHERE idCuentas = ?
+             CALL updateCuentas(?,?,?,?)
             `;
-      const values = [nombre, CBU_CVU, alias, id];
+      const values = [id, nombre, CBU_CVU, alias];
       const [rows] = await pool.query(queryUpdate, values);
       if (rows.affectedRows === 0) {
         res
@@ -72,15 +95,18 @@ export const updateCuentas = async (req, res) => {
           .json({ message: " No se pudo actualizar correctamente" });
       }
 
-      const [rowSelect] = await pool.query(
-        "SELECT * FROM cuentas WHERE idCuentas = ?",
-        [id]
-      );
+      const valueId = [id];
+      const [rowSelect] = await pool.query("CALL getCuentasById(?)", valueId);
       res.json(rowSelect[0]);
       return;
     }
 
-    res.status(400).json({ message: "Reviste que los datos ingreseados esten en el formato correcto" });
+    res
+      .status(400)
+      .json({
+        message:
+          "Reviste que los datos ingreseados esten en el formato correcto",
+      });
   } catch (error) {
     res.status(500).json({ error: "error en el servidor" });
     console.log({
@@ -95,7 +121,7 @@ export const deleteCuentas = async (req, res) => {
   try {
     const { id } = req.params;
     if (id) {
-      const queryDelete = "DELETE FROM cuentas WHERE idCuentas = ?";
+      const queryDelete = "CALL deleteCuentas(?)";
       const [rows] = await pool.query(queryDelete, [id]);
       if (rows.affectedRows === 0) {
         res.status(404).json({ error: "No se encontro la cuenta a eliminar" });

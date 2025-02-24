@@ -1,0 +1,6 @@
+
+DELIMITER $$
+CREATE PROCEDURE getCuentas()
+BEGIN
+	SELECT * FROM cuentas;
+END $$

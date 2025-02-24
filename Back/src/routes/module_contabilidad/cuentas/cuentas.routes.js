@@ -3,12 +3,14 @@ import {
   createCuentas,
   deleteCuentas,
   getCuentas,
+  getIdCuentas,
   updateCuentas,
 } from "../../../controllers/modules_contabilidad/cuentas/cuentas.controllers.js";
 
 const router = Router();
 
 router.get("/cuentas", getCuentas);
+router.get("/cuentas/:id", getIdCuentas);
 router.post("/cuentas", createCuentas);
 router.put("/cuentas/:id", updateCuentas);
 router.delete("/cuentas/:id", deleteCuentas);

@@ -16,21 +16,22 @@ export const cobrarRecargoByCuotas = async (req, res) => {
     }
 
     const [cuotas] = await pool.query(
-      "SELECT * FROM cuotas WHERE idCuotas = ?",
+      "CALL getIdCuotas(?)",
       [idCuotas]
     );
     const [detalleCuotas] = await pool.query(
-      "SELECT * FROM detallecuota WHERE idDetalleCuota = ?",
+      "CALL getIdDetalleCuotas(?)",
       [idDetalleCuota]
     );
     const [intereses] = await pool.query(
-      "SELECT * FROM intereses WHERE idIntereses = ?",
+      "CALL getInteresById(?)",
       [idIntereses]
     );
 
-    const { total } = cuotas.length > 0 ? cuotas[0] : {};
-    const { montoUnitario } = detalleCuotas.length > 0 ? detalleCuotas[0] : {};
-    const { porcentaje } = intereses.length > 0 ? intereses[0] : {};
+    const { total } = cuotas.length > 0 ? cuotas[0][0] : {};
+    const { montoUnitario } = detalleCuotas.length > 0 ? detalleCuotas[0][0] : {};
+    const { porcentaje } = intereses.length > 0 ? intereses[0][0] : {};
+   
 
     const data = await aplicarRecargoByCuota(
       idCuotas,
