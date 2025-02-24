@@ -6,6 +6,8 @@ import rolesRoutes from './routes/ModuloUsuario/GestionRol/rol.routes.js';
 import usuarioRoutes from './routes/ModuloUsuario/GestionUsuario/usuarios.routes.js';
 import direccionesRoutes from './routes/ModuloUsuario/GestionDirecciones/direcciones.routes.js';
 import contactoRoutes from './routes/ModuloUsuario/GestionContacto/contacto.routes.js';
+import asistenciaRoutes from "./routes/ModuloUsuario/GestionAsistenciaUsuario/asistencia.routes.js";
+import  motivosUsuariosRoutes  from "./routes/ModuloUsuario/GestionMotivos/motivos.routes.js";
 import { loginUsuario } from './controllers/ModuloUsuario/GestionUsuario/crudUsuarios.js';
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -59,6 +61,9 @@ app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/direcciones', direccionesRoutes);
 app.use('/api/contacto', contactoRoutes);
 app.post("/api/login", loginUsuario);
+app.use('/api/motivos', motivosUsuariosRoutes);
+app.use('/api/asistencia', asistenciaRoutes);
+
 
 app.use("/api",coutasRoutes);
 app.use("/api",cuentasRoutes);

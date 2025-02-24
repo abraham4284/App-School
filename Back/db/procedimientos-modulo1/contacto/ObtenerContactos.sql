@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE ObtenerContactos()
+BEGIN
+    SELECT * FROM contacto;
+END $$
+
+DELIMITER ;

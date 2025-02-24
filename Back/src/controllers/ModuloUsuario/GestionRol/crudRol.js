@@ -65,7 +65,7 @@ export const updateRol = async (req, res) => {
 export const deleteRol = async (req, res) => {
   try {
     const { id } = req.params;
-    const query = "DELETE FROM rol WHERE idrol = ?";
+    const query = 'CALL EliminarRol(?)';
     const [rows] = await pool.query(query, [id]);
     
     if (rows.affectedRows === 0) {
