@@ -26,7 +26,7 @@ export const createPagoByCuota = async (req, res) => {
     const NOperacion = generarNumeroDeOperacion();
 
     const query =
-    "UPDATE detallecuota SET fechaDelPago = ?, montoPag = ?, estado = ?, NOperacion = ?, idMedioDePago = ? WHERE idDetalleCuota = ?"
+    " CALL createPagosByCuotas(?,?,?,?,?,?)"
     const values = [ fechaDelPago, montoPag, estado, NOperacion, idMedioDePago, idDetalleCuota ]
 
     const [ rows ] = await pool.query(query,values);

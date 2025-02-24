@@ -60,9 +60,11 @@ export const createPlanCuotas = async (req, res) => {
       const idRol = 1;
       const total = parseFloat(cantidadCuotas * monto);
 
+      // Declaro la variable de slida en mysql antes de llamar al procedure
+      await pool.query("SET @idCuotas = 0")
       // 3- Insertamos los datos en la db, tabla Cuotas
       const queryInsertPlanCuotas =
-        "INSERT INTO cuotas (anio,cantidadCuotas,monto,total,idUsuarios,idRol,idAlumnos) VALUES (?,?,?,?,?,?,?)";
+        "CALL createCuotas(?,?,?,?,?,?,?, @idCuotas)";
       const values = [
         anio,
         cantidadCuotas,
@@ -73,12 +75,14 @@ export const createPlanCuotas = async (req, res) => {
         idAlumnos,
       ];
 
-      const [result] = await pool.query(queryInsertPlanCuotas, values);
-      const idCuotas = result.insertId;
+      // Creo el registro de las cuotas
+      await pool.query(queryInsertPlanCuotas, values);
+  
+      // Recupoero el insertId
+      const [[{ idCuotas }]] = await pool.query("SELECT @idCuotas AS idCuotas;")
 
       // 4-Creamos del detalle de cada cuota
       await crearDetalleDeCuotas(idCuotas, anio, cantidadCuotas, monto, estado);
-
       res.json("Plan registrado");
       return;
     }
@@ -95,3 +99,4 @@ export const createPlanCuotas = async (req, res) => {
     });
   }
 };
+

@@ -1,0 +1,5 @@
+DELIMITER $$
+CREATE PROCEDURE getIntereses()
+BEGIN
+  SELECT * FROM intereses;
+END $$
