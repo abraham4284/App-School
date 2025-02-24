@@ -1,54 +1,56 @@
-import { pool } from "../../../db.js";
+import { pool } from '../../../db.js';  // Importa la conexión con la base de datos
 
-export const getTurnos = async (req, res) => {
+// Obtener todos los turnos
+export const obtenerTurnos = async (req, res) => {
   try {
-    const turnos = await pool.query("SELECT * FROM turnos");
-    res.json(turnos[0]);
+    const [rows] = await pool.query('CALL ObtenerTurnos()');
+    res.json(rows[0]);  // Devuelve el primer array de resultados
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener los turnos" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const createTurno = async (req, res) => {
+// Obtener un turno por ID
+export const obtenerTurnoPorId = async (req, res) => {
+  try {
+    const { idTurno } = req.params;
+    const [rows] = await pool.query('CALL ObtenerTurnoPorId(?)', [idTurno]);
+    res.json(rows[0]);  // Devuelve el primer resultado
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Insertar un nuevo turno
+export const insertarTurno = async (req, res) => {
   try {
     const { modalidad, entrada, salida } = req.body;
-    const query = "INSERT INTO turnos (modalidad, entrada, salida) VALUES (?, ?, ?)";
-    const values = [modalidad, entrada, salida];
-    const [result] = await pool.query(query, values);
-    const newTurno = { idTurnos: result.insertId, modalidad, entrada, salida };
-    res.status(201).json(newTurno);
+    await pool.query('CALL InsertarTurno(?, ?, ?)', [modalidad, entrada, salida]);
+    res.json({ message: 'Turno insertado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el turno" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const updateTurno = async (req, res) => {
+// Actualizar un turno existente
+export const actualizarTurno = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idTurno } = req.params;
     const { modalidad, entrada, salida } = req.body;
-    const query = "UPDATE turnos SET modalidad = ?, entrada = ?, salida = ? WHERE idTurnos = ?";
-    const values = [modalidad, entrada, salida, id];
-    const [rows] = await pool.query(query, values);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Turno no encontrado" });
-    }
-    const [updatedTurno] = await pool.query("SELECT * FROM turnos WHERE idTurnos = ?", [id]);
-    res.json(updatedTurno[0]);
+    await pool.query('CALL ActualizarTurno(?, ?, ?, ?)', [idTurno, modalidad, entrada, salida]);
+    res.json({ message: 'Turno actualizado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el turno" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-export const deleteTurno = async (req, res) => {
+// Eliminar un turno
+export const eliminarTurno = async (req, res) => {
   try {
-    const { id } = req.params;
-    const query = "DELETE FROM turnos WHERE idTurnos = ?";
-    const [rows] = await pool.query(query, [id]);
-    if (rows.affectedRows === 0) {
-      return res.status(404).json({ error: "Turno no encontrado" });
-    }
-    res.status(200).json({ message: "Turno eliminado correctamente" });
+    const { idTurno } = req.params;
+    await pool.query('CALL EliminarTurno(?)', [idTurno]);
+    res.json({ message: 'Turno eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el turno" });
+    res.status(500).json({ error: error.message });
   }
 };

@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { createOrientacion, deleteOrientacion, getOrientaciones, updateOrientacion } from "../../../controllers/moduleAlumnos/GestionOrientaciones/orientaciones.js";
+import express from 'express';
+import { actualizarOrientacion, eliminarOrientacion, insertarOrientacion, obtenerOrientacionPorId, obtenerOrientaciones } from '../../../controllers/moduleAlumnos/GestionOrientaciones/orientaciones.js';
 
+const router = express.Router();
 
-const router = Router();
-
-router.get("/", getOrientaciones);
-router.post("/", createOrientacion);
-router.put("/:id", updateOrientacion);
-router.delete("/:id", deleteOrientacion);
+router.get('/', obtenerOrientaciones);
+router.get('/:idOrientacion', obtenerOrientacionPorId);
+router.post('/', insertarOrientacion);
+router.put('/:idOrientacion', actualizarOrientacion);
+router.delete('/:idOrientacion', eliminarOrientacion);
 
 export default router;

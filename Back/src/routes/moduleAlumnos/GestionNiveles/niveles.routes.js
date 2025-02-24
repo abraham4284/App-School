@@ -1,11 +1,12 @@
-import { Router } from "express";
-import { createNivel, deleteNivel, getNiveles, updateNivel } from "../../../controllers/moduleAlumnos/GestionNiveles/niveles.js"
+import express from 'express';
+import { actualizarNivel, eliminarNivel, insertarNivel, obtenerNivelPorId, obtenerNiveles } from '../../../controllers/moduleAlumnos/GestionNiveles/niveles.js';
 
-const router = Router();
+const router = express.Router();
 
-router.get("/", getNiveles);
-router.post("/", createNivel);
-router.put("/:id", updateNivel);
-router.delete("/:id", deleteNivel);
+router.get('/', obtenerNiveles);
+router.get('/:idNivel', obtenerNivelPorId);
+router.post('/', insertarNivel);
+router.put('/:idNivel', actualizarNivel);
+router.delete('/:idNivel', eliminarNivel);
 
 export default router;

@@ -1,51 +1,56 @@
-import { pool } from "../../../db.js";
+import { pool } from '../../../db.js';  // Import del pool de la base de datos
 
-// Obtener todos los motivos de alumnos
-export const getMotivosAlumnos = async (req, res) => {
+// Obtener todos los motivos
+export const obtenerMotivosAlumnos = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM motivosalumnos");
-    res.json(result);
+    const [rows] = await pool.query('CALL ObtenerMotivosAlumnos()');
+    res.json(rows[0]); // Devuelve el primer array de resultados
   } catch (error) {
-    res.status(500).json({ error: "Error al obtener los motivos de alumnos" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Crear nuevo motivo de alumno
-export const createMotivoAlumno = async (req, res) => {
+// Obtener un motivo por ID
+export const obtenerMotivoAlumnoPorId = async (req, res) => {
+  try {
+    const { idMotivo } = req.params;
+    const [rows] = await pool.query('CALL ObtenerMotivoAlumnoPorId(?)', [idMotivo]);
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Insertar un nuevo motivo
+export const insertarMotivoAlumno = async (req, res) => {
   try {
     const { tipo } = req.body;
-    const [result] = await pool.query("INSERT INTO motivosalumnos (tipo) VALUES (?)", [tipo]);
-    res.status(201).json({ message: "Motivo de alumno creado correctamente", id: result.insertId });
+    await pool.query('CALL InsertarMotivoAlumno(?)', [tipo]);
+    res.json({ message: 'Motivo insertado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al crear el motivo de alumno" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Actualizar motivo de alumno
-export const updateMotivoAlumno = async (req, res) => {
+// Actualizar un motivo existente
+export const actualizarMotivoAlumno = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { idMotivo } = req.params;
     const { tipo } = req.body;
-    const [result] = await pool.query("UPDATE motivosalumnos SET tipo = ? WHERE idMotivosAlumnos = ?", [tipo, id]);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Motivo no encontrado" });
-    }
-    res.json({ message: "Motivo de alumno actualizado correctamente" });
+    await pool.query('CALL ActualizarMotivoAlumno(?, ?)', [idMotivo, tipo]);
+    res.json({ message: 'Motivo actualizado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al actualizar el motivo de alumno" });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Eliminar motivo de alumno
-export const deleteMotivoAlumno = async (req, res) => {
+// Eliminar un motivo
+export const eliminarMotivoAlumno = async (req, res) => {
   try {
-    const { id } = req.params;
-    const [result] = await pool.query("DELETE FROM motivosalumnos WHERE idMotivosAlumnos = ?", [id]);
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Motivo no encontrado" });
-    }
-    res.json({ message: "Motivo de alumno eliminado correctamente" });
+    const { idMotivo } = req.params;
+    await pool.query('CALL EliminarMotivoAlumno(?)', [idMotivo]);
+    res.json({ message: 'Motivo eliminado correctamente' });
   } catch (error) {
-    res.status(500).json({ error: "Error al eliminar el motivo de alumno" });
+    res.status(500).json({ error: error.message });
   }
 };
