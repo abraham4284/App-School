@@ -1,0 +1,8 @@
+DELIMITER $$
+
+CREATE PROCEDURE CrearRol(IN p_nombre VARCHAR(50))
+BEGIN
+    INSERT INTO rol (nombre) VALUES (p_nombre);
+END $$
+
+DELIMITER ;

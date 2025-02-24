@@ -19,7 +19,7 @@ export const createMateria = async (req, res) => {
           [nombre, valorMinimo, nota]
       );
 
-      res.status(201).json({ message: "Materia creada correctamente", id: idMaterias });
+      res.status(201).json({ message: "Materia creada correctamente", id: result.insertId });
   } catch (error) {
       res.status(500).json({ error: error.message });
   }
