@@ -4,9 +4,9 @@ import { createPresencia, deletePresencia, getPresencias, updatePresencia } from
 
 const router = express.Router();
 
-router.get("/presencia", getPresencias);
-router.post("/presencia", createPresencia);
-router.put("/presencia/:id", updatePresencia);
-router.delete("/presencia/:id", deletePresencia);
+router.get("/", getPresencias);
+router.post("/", createPresencia);
+router.put("/:id", updatePresencia);
+router.delete("/:id", deletePresencia);
 
 export default router;

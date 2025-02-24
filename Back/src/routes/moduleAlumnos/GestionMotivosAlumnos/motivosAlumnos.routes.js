@@ -4,9 +4,9 @@ import { createMotivoAlumno, deleteMotivoAlumno, getMotivosAlumnos, updateMotivo
 
 const router = express.Router();
 
-router.get("/motivosalumnos", getMotivosAlumnos);
-router.post("/motivosalumnos", createMotivoAlumno);
-router.put("/motivosalumnos/:id", updateMotivoAlumno);
-router.delete("/motivosalumnos/:id", deleteMotivoAlumno);
+router.get("/", getMotivosAlumnos);
+router.post("/", createMotivoAlumno);
+router.put("/:id", updateMotivoAlumno);
+router.delete("/:id", deleteMotivoAlumno);
 
 export default router;
