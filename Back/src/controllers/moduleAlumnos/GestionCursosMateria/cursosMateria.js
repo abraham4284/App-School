@@ -1,44 +1,64 @@
-import { pool } from "../../../db.js";
-// Obtener todas las relaciones curso-materia
-export const getCursosMateria = async (req, res) => {
-    try {
-        const [rows] = await pool.query("SELECT * FROM cursosmateria");
-        res.json(rows);
-    } catch (error) {
-        res.status(500).json({ error: "Error al obtener las relaciones curso-materia" });
-    }
+import { pool } from '../../../db.js';
+
+// Obtener todos los registros de cursosmateria
+export const obtenerCursosMateria = async (req, res) => {
+  try {
+    const [rows] = await pool.query('CALL ObtenerCursosMateria()');
+    res.json(rows[0]); // Devuelve el primer array de resultados
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-// Crear una nueva relación curso-materia
-export const createCursoMateria = async (req, res) => {
-    try {
-        const { idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol } = req.body;
-
-        if (!idCurso || !idNiveles || !idOrientaciones || !idTurnos || !idMaterias) {
-            return res.status(400).json({ error: "Todos los campos son obligatorios" });
-        }
-
-        await pool.query("INSERT INTO cursosmateria (idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-            [idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol]
-        );
-
-        res.status(201).json({ message: "Relación curso-materia creada exitosamente" });
-    } catch (error) {
-        res.status(500).json({ error: "Error al crear la relación curso-materia" });
-    }
+// Obtener un registro de cursosmateria por ID
+export const obtenerCursoMateriaPorId = async (req, res) => {
+  try {
+    const { idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias } = req.params;
+    const [rows] = await pool.query('CALL ObtenerCursoMateriaPorId(?, ?, ?, ?, ?)', [
+      idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias
+    ]);
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
-// Eliminar una relación curso-materia
-export const deleteCursoMateria = async (req, res) => {
-    try {
-        const { idCurso, idMaterias } = req.params;
+// Insertar un nuevo registro en cursosmateria
+export const insertarCursoMateria = async (req, res) => {
+  try {
+    const { idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol } = req.body;
+    await pool.query('CALL InsertarCursoMateria(?, ?, ?, ?, ?, ?, ?)', [
+      idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol
+    ]);
+    res.json({ message: 'CursoMateria insertado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-        await pool.query("DELETE FROM cursosmateria WHERE idCurso = ? AND idMaterias = ?", 
-            [idCurso, idMaterias]
-        );
+// Actualizar un registro de cursosmateria
+export const actualizarCursoMateria = async (req, res) => {
+  try {
+    const { idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias } = req.params;
+    const { idUsuarios, idRol } = req.body;
+    await pool.query('CALL ActualizarCursoMateria(?, ?, ?, ?, ?, ?, ?)', [
+      idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias, idUsuarios, idRol
+    ]);
+    res.json({ message: 'CursoMateria actualizado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-        res.json({ message: "Relación curso-materia eliminada exitosamente" });
-    } catch (error) {
-        res.status(500).json({ error: "Error al eliminar la relación curso-materia" });
-    }
+// Eliminar un registro de cursosmateria
+export const eliminarCursoMateria = async (req, res) => {
+  try {
+    const { idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias } = req.params;
+    await pool.query('CALL EliminarCursoMateria(?, ?, ?, ?, ?)', [
+      idCurso, idNiveles, idOrientaciones, idTurnos, idMaterias
+    ]);
+    res.json({ message: 'CursoMateria eliminado correctamente' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
