@@ -29,6 +29,7 @@ import nivelesRoutes from './routes/moduleAlumnos/GestionNiveles/niveles.routes.
 import turnosRoutes from './routes/moduleAlumnos/GestionTurnos/turnos.routes.js'
 import fichamedicaRoutes from './routes/moduleAlumnos/GestionFichaMedica/fichaMedica.routes.js'
 import presenciaAlumnosRoutes from './routes/moduleAlumnos/GestionPresenciaAlumnos/presenciaAlumnos.routes.js'
+import presenciaMateriasRoutes from './routes/moduleAlumnos/GestionPresenciaMaterias/presenciaMaterias.routes.js'
 import motivosAlumnosRoutes from './routes/moduleAlumnos/GestionMotivosAlumnos/motivosAlumnos.routes.js'
 import tutoAlumnosRoutes from './routes/moduleAlumnos/GestionTutoAlumnos/tutoalumnos.routes.js'
 import cursosMateriaRoutes from './routes/moduleAlumnos/GestionCursosMateria/cursosMateria.routes.js'
@@ -83,6 +84,7 @@ app.use("/api/niveles", nivelesRoutes)
 app.use("/api/turnos", turnosRoutes)
 app.use("/api/fichamedica", fichamedicaRoutes)
 app.use("/api/presenciaAlumnos", presenciaAlumnosRoutes)
+app.use('/presenciaMaterias', presenciaMateriasRoutes)
 app.use("/api/motivosAlumnos", motivosAlumnosRoutes)
 app.use("/api/tutoalumnos", tutoAlumnosRoutes)
 app.use("/api/cursosmateria", cursosMateriaRoutes)
